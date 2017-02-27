@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+
+## import best practices core modules ##
+use strict;
+use warnings;
+
+## Import Perl 5.24 features ##
+use v5.24;
+
+## Import useful CPAN Modules ##
+use FindBin;
+use Getopt::Long;
+use Data::Dumper;
+
+## Add Model/Controller classes to our path ##
+use lib "$FindBin::Bin/../lib";
+
+## Import Model classes ##
+use Apache;
+use Apache::Config;
+
+## Construct apache object ##
+my $apache = Apache->new(
+  config => Apache::Config->new(
+    config => {
+      logfile => "/home/madhatter/Development/Maxmind/access.log",
+      reportfile => "/home/madhatter/Development/Maxmind/reports/report",
+      api => {
+        url => "freegeoip.net",
+        data_format => 'json',
+      },
+    },
+  ),
+);
+
+$apache->gen_log_report;
